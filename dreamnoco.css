@@ -1,0 +1,117 @@
+<style>
+.main #about p {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    font-weight: bold;
+    /*border: solid 3px #000000;*/
+}
+.sns_menu {
+  float: left;
+  width: 30%;
+}
+
+.bodycontents {
+  float: none;
+  width: auto;
+  margin-left: 300px;
+}
+
+.main div.about{
+  margin: 0;
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.main div.img{
+  vertical-align: middle;
+}
+.main div.about_inner{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+/*メニューのボタン*/
+  body div nav ul li {
+    text-decoration: underline;
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    color: rgba(0, 69, 212, 0.47);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    background-image: -webkit-linear-gradient(#6795fd 0%, #67ceff 100%);
+    background-image: linear-gradient(#6795fd 0%, #67ceff 100%);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+    border-bottom: solid 3px #5e7fca;
+  }
+  body div nav ul li:active{
+    -ms-transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+  }
+  body.shop #shopHeader nav {
+    /*border-bottom:none;*/
+    padding-bottom: 20px;
+    border-top:none;
+  }
+  body.shop #shopHeader #shopTitleHeader {
+    height: 80px;
+    /*width: 100%;*/
+    margin: 0px;
+    padding: 10px;
+    position: relative;
+    letter-spacing: 2px;
+  	/*display: block;*/
+    /*justify-content: right;*/
+	align-items: center;
+	overflow: hidden;
+    /*display: table-cell;*/
+    vertical-align: middle;
+  }
+
+  body.shop #shopHeader #shopTitleHeader img   {
+    float: left; 
+    height: auto;
+  }
+  
+  body.shop #shopHeader #shopTitleHeader h1 {
+    font-size: 40px;
+    margin-top: -10px;
+    margin-bottom: 50px;
+  }
+  
+  body.shop #shopHeader #shopTitleHeader h2 {
+    font-size: 20px;
+    margin: 0px;
+    text-align: center;
+    text-decoration: underline;
+  }
+  
+  /*トップへ戻るボタン*/
+  #page-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 77%;
+  }
+  
+  #page-top a {
+    background: #666;
+    text-decoration: none;
+    color: #fff;
+    width: 100px;
+    padding: 30px 0;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+  }
+  
+  #page-top a:hover {
+    text-decoration: none;
+    background: #999;
+  }
+</style>
