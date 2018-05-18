@@ -6,8 +6,8 @@ padding: 0 ;
 }
 /* ここまでデモページ用のコード */
 #modal-content {
-width: 50% ;
-margin: 0 ;
+width: 90% ;
+margin: 5px ;
 padding: 10px 20px ;
 border: 2px solid #aaa ;
 background: #fff ;
