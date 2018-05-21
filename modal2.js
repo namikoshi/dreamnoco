@@ -1,4 +1,3 @@
-<script>
 $(function(){
     // スクロールバーの横幅を取得
     $('html').append('<div class="scrollbar" style="overflow:scroll;"></div>');
@@ -83,4 +82,3 @@ $(function(){
 
     });
 });
-</script>
