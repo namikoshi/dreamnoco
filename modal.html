@@ -1,24 +1,1056 @@
-<!-- ここからモーダルウィンドウ -->
-<div id="modal-content">
- <div id="modal-content-innar">
- <!-- モーダルウィンドウのコンテンツ開始 -->
- <p class="red bold">モーダルウィンドウのデモ
- 
-<div class="main">
-	<div id="about">
-		<h3 style="font-size: 40px;text-decoration: underline;text-align: center;}">お知らせ</h3>
-		<div class="about">
-		  <div class="info" style="{padding: 0.5em 1em; margin: 2em 0;font-weight: bold;border: solid 3px #000000;}">
-	            <p>2018/1/18 ドリーム・ノコ設立</p>
-	            <p>2018/3/4  社長誕生日</p>
-	            <p>2018/3/17 サイト準備中</p>
-        </div>
-    </div>
-</div>
+{block:NotLoadItemsPage}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="ja"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="ja"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="ja"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="ja"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="copyright" content="BASE" />
+	<title>{PageTitle}</title>
+	{FaviconTag}
+	{JQueryTag}
+	{CanonicalTag}
 
-</p>
- 
-<p><a id="modal-close" class="button-link">閉じる</a></p>
- </div>
- <!-- モーダルウィンドウのコンテンツ終了 -->
-</div>
+	<meta name="BASE-Theme-Name" content="shop_01">
+	<meta name="BASE-Theme-Version" content="17">
+
+	{block:Hidden}
+	<!-- meta tag -->
+	{/block:Hidden}
+
+	{block:IndexPage}
+	{HeadLinkNextPrevTag}
+	{/block:IndexPage}
+
+	{block:ItemPage}
+	{MetaItemInfoTag}
+	<link rel="stylesheet" type="text/css" href="{BASEURL}/css/colorbox.css">
+	<link rel="stylesheet" href="{BASEURL}/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{BASEURL}/css/bootstrap-select.min.css">
+	{/block:ItemPage}
+
+	{block:NotItemPage}
+	<meta http-equiv="X-UA-Compatible" content="IE=8 ; IE=9" />
+	{MetaShopInfoTag}
+	{/block:NotItemPage}
+
+	{block:AppsSearch}
+	<link rel="stylesheet" type="text/css" href="{BASEURL}/search/css/shopTemplate/search.css?{UpdateTime}">
+	{/block:AppsSearch}
+
+	{block:AppsItemLabel}
+	<link rel="stylesheet" type="text/css" href="{BASEURL}/item_label/css/ShopTemplate/style.css?{UpdateTime}">
+	<script type="text/javascript" src="{BASEURL}/item_label/js/ShopTemplate/labelpostion.js?{UpdateTime}"></script>
+	{/block:AppsItemLabel}
+
+	{block:AppsBlog}
+	<link href="{BlogFeedPageURL}" rel="alternate" type="application/rss+xml" title="Blog | {ShopName}" />
+	{/block:AppsBlog}
+
+	<!--[if IE]>
+	<script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!--[if lt IE 8 ]>
+	<script src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+	<script>window.attachEvent('onload', function(){CFInstall.check({mode:'overlay'});});</script>
+	<![endif]-->
+
+	<script type="text/javascript" src="{BASEURL}/js/jquery.bottom-1.0.js"></script>
+	<script type="text/javascript" src="{BASEURL}/js/change_status.js?{UpdateTime}"></script>
+	<script type="text/javascript" src="{BASEURL}/js/modernizr-2.7.1.min.js"></script>
+
+	<link rel="stylesheet" href="/css/shopTemplate/common.css?{UpdateTime}">
+	<link rel="stylesheet" href="{BASEURL}/css/shopTemplate/shop_01.css?{UpdateTime}">
+
+	{BackgroundTag}
+	<style type="text/css">
+		{block:NavColor}
+		.childCategoryList01_child,
+		.childCategoryList01_link,
+		.mainHeaderNavColor,
+		.tempTop .categoryTitle01 {
+			color: {NavColor};
+		}
+		{/block:NavColor}
+	</style>
+	
+	{GoogleAnalyticsTag}
+	<script>
+$(function(){
+    // 「.modal-open」をクリック
+    $('.modal-open').click(function(){
+
+         // スクロールバーの横幅を取得
+        var scrollsize = $(window).width() - $('body').prop('clientWidth');
+
+        // html、bodyを固定（overflow:hiddenにする）
+        $('html, body').addClass('lock');
+
+        // オーバーレイ用の要素を追加
+        $('body').append('<div class="modal-overlay"></div>');
+
+        // オーバーレイをフェードイン
+        $('.modal-overlay').fadeIn('slow');
+
+        // モーダルコンテンツのIDを取得
+        var modal = '#' + $(this).attr('data-target');
+
+         // モーダルコンテンツを囲む要素を追加
+        $(modal).wrap("<div class='modal-wrap'></div>");
+
+        // モーダルコンテンツを囲む要素を表示
+        $('.modal-wrap').show();
+
+        // モーダルコンテンツの表示位置を設定
+        modalResize();
+
+         // モーダルコンテンツフェードイン
+        $(modal).fadeIn('slow');
+
+        // モーダルコンテンツをクリックした時はフェードアウトしない
+        $(modal).click(function(e){
+            e.stopPropagation();
+        });
+
+        // 「.modal-overlay」あるいは「.modal-close」をクリック
+        $('.modal-wrap, .modal-close').off().click(function(){
+            // モーダルコンテンツとオーバーレイをフェードアウト
+            $(modal).fadeOut('slow');
+            $('.modal-overlay').fadeOut('slow',function(){
+                // html、bodyの固定解除
+                $('html, body').removeClass('lock');
+                // オーバーレイを削除
+                $('.modal-overlay').remove();
+                // モーダルコンテンツを囲む要素を削除
+                $(modal).unwrap("<div class='modal-wrap'></div>");
+           });
+        });
+
+        // リサイズしたら表示位置を再取得
+        $(window).on('resize', function(){
+            modalResize();
+        });
+
+        // モーダルコンテンツの表示位置を設定する関数
+        function modalResize(){
+            // ウィンドウの横幅、高さを取得
+            var w = $(window).width();
+            var h = $(window).height();
+
+            // モーダルコンテンツの横幅、高さを取得
+            var mw = $(modal).outerWidth(true);
+            var mh = $(modal).outerHeight(true);
+
+            // モーダルコンテンツの表示位置を設定
+            if ((mh > h) && (mw > w)) {
+                $(modal).css({'left': 0 + 'px','top': 0 + 'px'});
+            } else if ((mh > h) && (mw < w)) {
+                var x = (w - scrollsize - mw) / 2;
+                $(modal).css({'left': x + 'px','top': 0 + 'px'});
+            } else if ((mh < h) && (mw > w)) {
+                var y = (h - scrollsize - mh) / 2;
+                $(modal).css({'left': 0 + 'px','top': y + 'px'});
+            } else {
+                var x = (w - mw) / 2;
+                var y = (h - mh) / 2;
+                $(modal).css({'left': x + 'px','top': y + 'px'});
+            }
+        }
+
+    });
+});
+</script>
+
+<style>
+.lock {
+    overflow:hidden;
+}
+
+.modal-content {
+    position:relative;
+    display:none;
+    width: 90% ;
+    max-width: 960px;
+    max-height:80%;
+    margin:30px;
+    padding:10px 20px;
+    border:2px solid #aaa;
+    background:#fff;
+    overflow:auto;
+}
+
+.modal-content p {
+    margin:0;
+    padding:0;
+}
+
+.modal-overlay {
+    z-index:1;
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:120%;
+    background-color:rgba(0,0,0,0.75);
+}
+
+.modal-wrap {
+    z-index:2;
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:auto;
+}
+
+.modal-open {
+    color:#00f;
+    text-decoration:underline;
+}
+
+.modal-open:hover {
+    cursor:pointer;
+    color:#f00;
+}
+
+.modal-close {
+    color:#00f;
+    text-decoration:underline;
+}
+
+.modal-close:hover {
+    cursor:pointer;
+    color:#f00;
+}
+</style>
+<style>
+.notice{
+    padding: 8px 19px;
+    margin: 2em 0;
+    color: #2c2c2f;
+    background: #cde4ff;
+    border-top: solid 5px #5989cf;
+    border-bottom: solid 5px #5989cf;
+}
+.notice p {
+    font-size: 20px;
+    color: #000000;
+    margin: 0; 
+    padding: 0;
+}
+</style>
+<!-- トップへ戻るボタン css -->
+<style>
+#page-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 77%;
+}
+#page-top a {
+    background: #666;
+    text-decoration: none;
+    color: #fff;
+    width: 100px;
+    padding: 30px 0;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+}
+#page-top a:hover {
+    text-decoration: none;
+    background: #999;
+}
+</style>
+	<script src="{BASEURL}/js/jquery.colorbox-min.js"></script>
+	<script src="{BASEURL}/js/jquery.bxslider.min.js"></script>
+	<script>
+        (function(win, doc, $) {
+          'use strict';
+          var COMMON = {};
+
+          $(function() {
+            COMMON.init();
+          });
+
+          COMMON = {
+            init: function() {
+              $(window).load(function(){
+                COMMON.slide_img();
+                COMMON.top_slide_img();
+                COMMON.colorbox();
+                COMMON.customScrollBar();
+              });
+            },
+            top_slide_img: function(){
+              $('#slider').bxSlider({
+                auto: true,
+                speed: 500, //デフォルトのスピード
+                slideWidth: 640,
+                preloadImages: 'visible',
+                pager: false,
+                infiniteLoop:true,
+                // pagerType: 'short',
+                controls: false,
+                // captions: true, キャプションタグを付加で　title="caption1です。
+                // nextText: "次 ",
+                // prevText: "前 ",
+                // minSlides:3,
+                mode: 'horizontal'
+              });
+            },
+            slide_img: function(){
+              $('.bxslider').bxSlider({
+				auto: true,
+                controls: false,
+				pagerCustom: '#bx-pager',
+				adaptiveHeight: true,
+				mode: 'fade'
+			});
+            },
+            colorbox:function(){
+              $(".ajax").colorbox({className:'itemCb',maxWidth:'1000px',current:false});
+            },
+            customScrollBar: function(){
+              $("#slideImgPager").mCustomScrollbar({
+                axis:"y",
+                theme:"dark-thin"
+              });
+            }
+          };
+        }(window, document, jQuery));
+      </script>
+
+</head>
+<body class="tempTop template{block:ItemPage} tempDetail{/block:ItemPage} theme--1">
+    
+    <p id="page-top"><a href="#wrap">ページトップへ</a></p>
+
+	{block:AppsI18n}{AppsI18nTag}{/block:AppsI18n}
+
+	{BASEMenuTag}
+
+	{block:IndexPage}
+	<span id="max_page" style="display: none;">{MaxPageNumber}</span>
+	<span id="next_page" style="display: none;">{NextPageNumber}</span>
+	{/block:IndexPage}
+
+	<!-- script:Facebook -->
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&appId=350947278320210&version=v2.0";
+	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<!-- script:Twitter -->
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+	<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+	<div class="header_container">
+		<header id="header">
+			<h1><a href="{IndexPageURL}" id="logo">{LogoTag}</a></h1>
+			<nav style="height:80px">
+				<ul class="menu">
+					<li><a data-target="con1" class="modal-open" style="color:#000000;text-decoration:none">お知らせ</a></li>
+					<li><a class="mainHeaderNavColor" href="{AboutPageURL}">Dream Nocoについて</a></li>
+					<li><a class="mainHeaderNavColor" href="{IndexPageURL}">通販</a></li>
+					<li><a data-target="con2" class="modal-open" style="color:#000000;text-decoration:none">商品紹介</a></li>
+					<!--{block:AppsBlog}-->
+					<!--<li><a class="mainHeaderNavColor" href="{BlogPageURL}">blog</a></li>-->
+					<!--{/block:AppsBlog}-->
+					<!--{block:AppsCoinFunding}-->
+					<!--	<li><a class="mainHeaderNavColor" href="{CoinFundingPageURL}">coin</a></li>-->
+					<!--{/block:AppsCoinFunding}-->
+					<!--{block:AppsItemCategory}-->
+					<!--<li>-->
+					<!--	<div id="category-menu">-->
+					<!--		<span class="mainHeaderNavColor">category</span>-->
+					<!--		<div class="category-list">-->
+					<!--			{AppsItemCategoryCategoriesTag}-->
+					<!--		</div>-->
+					<!--	</div>-->
+					<!--</li>-->
+					<!--{/block:AppsItemCategory}-->
+					<li><a class="mainHeaderNavColor" href="{ContactPageURL}">お問い合わせ</a></li>
+					{block:AppsSearch}
+					<li class="column itemSearch">
+						<form id="x_itemSearchForm" class="itemSearch__form" action="{SearchPageURL}" method="get">
+							<input class="itemSearch__field" type="text" name="q" placeholder="search" value="{IndexPageSearch}"/>
+							<button class="itemSearch__btn" type="submit"><span id="x_iconSearch" class="mainHeaderNavColor icon-search"></span></button>
+						</form>
+					</li>
+					{/block:AppsSearch}
+				</ul>
+			</nav>
+			
+			<center>
+			    <aside style="float:left;left: 25%;
+">
+  <nav>
+    <ul>
+      <li>
+      	<div class="sns_menu">
+        	<div class="fb-page" data-href="https://www.facebook.com/dream.noco/" data-tabs="timeline" data-width="300" data-height="300" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false"><blockquote cite="https://www.facebook.com/dream.noco/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/dream.noco/">ドリーム・ノコ</a></blockquote></div>
+      	</div>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+		    <ul id="slider" style="rigth: 75%;
+">
+              <li>
+                <div class="imgBox"><img src="https://base-ec2if.akamaized.net/w=400,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="" title="" ></div>
+              </li>
+              <li>
+                <div class="imgBox"><img src="https://base-ec2if.akamaized.net/w=300,a=0,q=90,u=1/images/item/origin/b5d7379612a976310c9efa414b96dc18.jpg" alt="" title="" ></div>
+              </li>
+            </ul>
+            </center>
+		</header>
+		<!-- モーダルのdiv orver -->
+		<!-- <div id="orver"> -->
+			<!-- ここからモーダルウィンドウ -->
+			<div id="con1" class="modal-content">
+			    <h3 style="font-size: 30px;text-decoration: underline;text-align: center;}">お知らせ</h3>
+			    <div class="notice">
+			        <p>2018/5/22 ダイシモチ収穫</p>
+			        <p>2018/3/17 サイト準備中</p>
+			        <p>2018/3/4  社長誕生日</p>
+			        <p>2018/1/18 ドリーム・ノコ設立</p>
+			    </div>
+			    <p><a class="modal-close">閉じる</a></p>
+			</div>
+			<div id="con2" class="modal-content">
+			    <h3 style="font-size: 30px;text-decoration: underline;text-align: center;}">商品紹介</h3>
+			    <div class="notice">
+			        <p><b>ダイシモチ麦とは</b></p>
+			        <p>讃岐もち麦ダイシモチには、精白米の約30倍もの食物繊維が含まれており、生活習慣病の予防に効果があるといわれているβ-グルカン（水溶性食物繊維）が、とりわけ豊富に含まれています。 
+			ご飯に1～2割混ぜて炊くだけで、気軽にもっちりおいしい麦ご飯を食べることができます。</p><br>
+			        <p><b>キラリモチ麦とは</b></p>
+			        <p>ポリフェノールの一種であるプロアントシアニングをほとんど含まないため、炊飯など加熱調理後も褐変しにくい特徴を持つもち性の二条裸麦です。 <br>
+			ポリフェノール含量は従来の大麦品種の半分程度です。このため、炊飯後の褐変がほとんど見られず、麦ごはんが白いままで色相に優れます。<br>
+			炊飯麦の食感は、もち性であるため食味が優れ、粘りがあり「モチモチ」しており、通常のうるち麦（オオムギ・ハダカムギ）の麦ご飯のように冷めたあとの少し「ボソボソ」した感じがないため、おいしく食べやすい麦ごはんになります。<br>
+			通常の品種に比べて食物繊維のβ-グルカン含量（水溶性食物繊維）は、1.5倍程度多く含まれています。<br>
+			もち性であるため、その炊飯麦は粘りがあって柔らかく、食味に優れています。<br></p>
+			    </div>
+			    <p><a class="modal-close">閉じる</a></p>
+			</div>
+
+
+		{block:AppsItemCategory}
+		{block:IndexPageCategory}
+		<h2 class="categoryTitle01">{IndexPageCategory}</h2>
+
+		{block:HasAppsItemCategoryChildCategories}
+		<ul class="childCategoryList01">
+			{block:AppsItemCategoryChildCategories}
+			<li class="childCategoryList01_child"><a href="{AppsItemCategoryChildCategoryPageURL}" class="childCategoryList01_link">{AppsItemCategoryChildCategoryName}</a></li>
+			{/block:AppsItemCategoryChildCategories}
+		</ul>
+		{/block:HasAppsItemCategoryChildCategories}
+
+		{/block:IndexPageCategory}
+		{/block:AppsItemCategory}
+
+		{block:AppsBlogArticleIsPinned}
+		{block:NoIndexPageCategory}
+		{block:NoIndexPageSearch}
+		<div class="pinnedBlog">
+			<p class="pinnedBlog_title mainHeaderNavColor">
+				<a href="{AppsBlogArticlePageURL}">{AppsBlogArticleTitle}</a>
+			</p>
+		</div>
+		{/block:NoIndexPageSearch}
+		{/block:NoIndexPageCategory}
+		{/block:AppsBlogArticleIsPinned}
+
+
+	</div><!-- /header_container -->
+
+
+	{block:IndexPage}
+
+	{block:ShopPublic}
+
+	{block:IndexPageSearch}
+		<h3 class="titleForSearchResult">{lang:ItemSearchResult}</h3>
+	{/block:IndexPageSearch}
+
+	{block:HasItems}
+	<ul id="item_list">
+		{block:Items}
+		<li class="content">
+			<div class="item-container">
+				<a href="{ItemPageURL}" title="" class="item-img">
+					{block:AppsItemLabel}
+					{AppsItemLabelTag}
+					{/block:AppsItemLabel}
+					<img src="{block:ItemImage1}{ItemImage1URL-300}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="{ItemTitle}" />
+				</a>
+				<div class="item-detail">
+					<a href="{ItemPageURL}" alt="item-name">
+						<h1 class ="truncate">{ItemTitle}</h1>
+					</a>
+					{block:HasItemStock}
+					{block:NoItemProperPrice}
+					<!-- 定価 -->
+					<h3>{ItemPrice}</h3>
+					{/block:NoItemProperPrice}
+					{block:HasItemProperPrice}
+					<!-- 割引 -->
+					<h3 class="discountPrice">
+						<span class="discountPrice__ratio">{ItemDiscountRate}</span>
+						<span class="discountPrice__calcPrice">{ItemPrice}</span>
+					</h3>
+					{/block:HasItemProperPrice}
+					<div>
+						<p>{ItemDetailNoBr}</p>
+						<a href="{ItemPageURL}" class="buy-button button">>  MORE</a>
+					</div>
+					{/block:HasItemStock}
+					{block:NoItemStock}
+					<h3 class="price_del">{ItemPrice}</h3>
+					<span>SOLD OUT</span>
+					<div>
+						<p>{ItemDetailNoBr}</p>
+						<a href="{ItemPageURL}" class="buy-button button btn_soldout">>  SOLD OUT</a>
+					</div>
+					{/block:NoItemStock}
+				</div>
+			</div>
+		</li>
+		{/block:Items}
+	</ul>
+	<div id="loading" style="display: none;text-align: center;width: 100%;">
+		<img src="/img/loading.gif" style="padding: 20px 0;width: 220px;" />
+	</div>
+	{/block:HasItems}
+	{block:NoItems}
+	<section class="tmpBox">
+		<p>{lang:NoItemsMessage}</p>
+	</section>
+	{/block:NoItems}
+	{/block:ShopPublic}
+
+	{block:NotShopPublic}
+	<section class="tmpBox">
+		<p>{lang:NotShopPublicMessage}</p>
+	</section>
+	{/block:NotShopPublic}
+
+	<script type="text/javascript">
+		var process_flg = false;
+		var end_flg = false;
+		$(window).bottom({proximity: 0.05});
+		$(window).on('bottom', function() {
+			if (process_flg == false && end_flg == false) {
+				var max_page = $("#max_page").text();
+				var next_page = $('#next_page').text();
+				if (eval(max_page) >= eval(next_page)) {
+					$.ajax({
+						url: "{LoadItemsPageURL}" + next_page + "{LoadItemsPageURLParams}",
+						dataType: 'html',
+						beforeSend: function () {
+							process_flg = true;
+							$('#loading').css('display', 'block');
+						},
+						success: function (data) {
+							$('#item_list').append(data);
+							next_page = eval(next_page) + 1;
+							$('#next_page').text(next_page);
+						},
+						complete: function () {
+							process_flg = false;
+							$('#loading').css('display', 'none');
+						}
+					});
+				} else {
+					end_flg = true;
+				}
+			}
+		});
+	</script>
+	{/block:IndexPage}
+
+	{block:ItemPage}
+	<div id="item_page_wrap">
+		{IllegalReportMessageTag}
+		<section class="radius_box">
+			<div id="first_column">
+				<ul class="bxslider">
+					<li>
+						<div class="img_box">
+							<a href="{block:ItemImage1}{ItemImage1URL-origin}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" class="ajax btn grn save" rel="group">
+								{block:AppsItemLabel}
+								{AppsItemLabelTag}
+								{/block:AppsItemLabel}
+								<img src="{block:ItemImage1}{ItemImage1URL-500}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="" id="img_large" itemprop="image" >
+							</a>
+						</div>
+					</li>
+					{block:ItemImage2}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage2URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage2URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage2}
+					{block:ItemImage3}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage3URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage3URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage3}
+					{block:ItemImage4}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage4URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage4URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage4}
+					{block:ItemImage5}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage5URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage5URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage5}
+					{block:ItemImage6}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage6URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage6URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage6}
+					{block:ItemImage7}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage7URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage7URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage7}
+					{block:ItemImage8}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage8URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage8URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage8}
+					{block:ItemImage9}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage9URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage9URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage9}
+					{block:ItemImage10}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage10URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage10URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage10}
+					{block:ItemImage11}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage11URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage11URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage11}
+					{block:ItemImage12}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage12URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage12URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage12}
+					{block:ItemImage13}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage13URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage13URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage13}
+					{block:ItemImage14}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage14URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage14URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage14}
+					{block:ItemImage15}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage15URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage15URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage15}
+					{block:ItemImage16}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage16URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage16URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage16}
+					{block:ItemImage17}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage17URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage17URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage17}
+					{block:ItemImage18}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage18URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage18URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage18}
+					{block:ItemImage19}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage19URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage19URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage19}
+					{block:ItemImage20}
+					<li style="display:none;">
+						<div class="img_box">
+							<a href="{ItemImage20URL-origin}" class="ajax btn grn save" rel="group">
+								<img src="{ItemImage20URL-500}" alt="" title="">
+							</a>
+						</div>
+					</li>
+					{/block:ItemImage20}
+				</ul>
+				<div id="bx-pager">
+					<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{block:ItemImage1}{ItemImage1URL-76}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="" id="img_large" ></div></a>
+					{block:ItemImage2}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage2URL-76}" alt="" title=""></div></a>{/block:ItemImage2}
+					{block:ItemImage3}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage3URL-76}" alt="" title=""></div></a>{/block:ItemImage3}
+					{block:ItemImage4}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage4URL-76}" alt="" title=""></div></a>{/block:ItemImage4}
+					{block:ItemImage5}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage5URL-76}" alt="" title=""></div></a>{/block:ItemImage5}
+					{block:ItemImage6}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage6URL-76}" alt="" title=""></div></a>{/block:ItemImage6}
+					{block:ItemImage7}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage7URL-76}" alt="" title=""></div></a>{/block:ItemImage7}
+					{block:ItemImage8}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage8URL-76}" alt="" title=""></div></a>{/block:ItemImage8}
+					{block:ItemImage9}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage9URL-76}" alt="" title=""></div></a>{/block:ItemImage9}
+					{block:ItemImage10}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage10URL-76}" alt="" title=""></div></a>{/block:ItemImage10}
+					{block:ItemImage11}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage11URL-76}" alt="" title=""></div></a>{/block:ItemImage11}
+					{block:ItemImage12}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage12URL-76}" alt="" title=""></div></a>{/block:ItemImage12}
+					{block:ItemImage13}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage13URL-76}" alt="" title=""></div></a>{/block:ItemImage13}
+					{block:ItemImage14}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage14URL-76}" alt="" title=""></div></a>{/block:ItemImage14}
+					{block:ItemImage15}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage15URL-76}" alt="" title=""></div></a>{/block:ItemImage15}
+					{block:ItemImage16}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage16URL-76}" alt="" title=""></div></a>{/block:ItemImage16}
+					{block:ItemImage17}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage17URL-76}" alt="" title=""></div></a>{/block:ItemImage17}
+					{block:ItemImage18}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage18URL-76}" alt="" title=""></div></a>{/block:ItemImage18}
+					{block:ItemImage19}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage19URL-76}" alt="" title=""></div></a>{/block:ItemImage19}
+					{block:ItemImage20}<a data-slide-index="{Counter}" href=""><div class="small_img_box"><img src="{ItemImage20URL-76}" alt="" title=""></div></a>{/block:ItemImage20}
+				</div>
+			</div>
+
+			<div id="second_column">
+				<header>
+					<h1>{ItemTitle}{block:AppsDownload}{block:ItemDigitalContent}({ItemDigitalContent}){/block:ItemDigitalContent}{/block:AppsDownload}</h1>
+				</header>
+				{block:HasItemStock}
+				{block:NoItemProperPrice}
+				<!-- 定価 -->
+				<div id="price">
+					<p>{ItemPrice}</p>
+				</div>
+				{/block:NoItemProperPrice}
+				{block:HasItemProperPrice}
+				<!-- 割引 -->
+				<p class="discountPrice">
+					<span class="discountPrice__default">{ItemProperPrice}</span><span class="discountPrice__ratio">{ItemDiscountRate}</span>
+					<span class="discountPrice__calcPrice">{ItemPrice}</span>
+				</p>
+				{/block:HasItemProperPrice}
+				{/block:HasItemStock}
+				{block:NoItemStock}
+				<div id="price_del">
+					<p>{ItemPrice}</p>
+					<span>SOLD OUT</span>
+				</div>
+				{/block:NoItemStock}
+
+				{ItemAttentionTag}
+
+				{block:NoItemStock}
+				<p class="buy_button--noItem"><a href="{ContactPageURL}/items/{ItemId}">{lang:NoItemInquiry}</a></p>
+				{/block:NoItemStock}
+
+				<div id="item_detail">
+					<p>{ItemDetail}</p>
+				</div>
+				<form id="purchase_form" name="menu" action="{AddToCartURL}" method="post">
+					{ItemSelectTag}
+					{block:HasItemStock}
+					<div id="buy_button">
+						<input type="submit" value="> {lang:AddToCart}">
+					</div>
+					{/block:HasItemStock}
+				</form>
+				{EmbedWidgetTag}
+				<div id="social">
+					<div id="social_button">
+						<a href="http://twitter.com/share" class="twitter-share-button" data-url="{ItemRedirectUrl}" data-lang="ja" data-hashtags="{TwitterDataHashtags}" data-via="{TwitterDataVia}">{lang:Tweet}</a>
+						<div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u&src=sdkpreparse">シェア</a></div>
+					</div>
+					<div id="reportBtn">
+						{IllegalReportTag}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{block:AppsReview}
+		{AppsReviewTag}
+		{/block:AppsReview}
+	</div>
+
+	{/block:ItemPage}
+
+	{block:AboutPage}
+	<div class="main" style="padding:0px">
+		<div id="about">
+			<h2>Dream Nocoについて</h2>
+			<p>{ShopIntroduction}</p>
+            <nav>
+              <ul>
+                <li><a class="mainHeaderNavColor" href="#dream">●目標や夢</a></li>
+                <li><a class="mainHeaderNavColor" href="#efforts">●取り組み</a></li>
+                <li><a class="mainHeaderNavColor" href="#roadmap">●ロードマップ</a></li>
+                <li><a class="mainHeaderNavColor" href="#idea">●理念</a></li>
+                <li><a class="mainHeaderNavColor" href="#profile">●生産者のプロフィールと挨拶</a></li>
+              </ul>
+            </nav>
+            
+            <div class="about">
+              <h3 id="dream">目標や夢</h3>
+                <img src="https://base-ec2if.akamaized.net/w=60,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="">
+                <div class="about_inner">
+                  <p>◎目標：億万長者</p>
+                  <p>◎夢：世界征服</p>
+                </div>
+                
+                <h3 id="efforts">取り組み</h3>
+                <img src="https://base-ec2if.akamaized.net/w=60,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="">
+                <div class="about_inner">
+                  <p>◎写真：億万長者になるために日々畑の手入れをしています</p>
+                </div>
+                
+                <h3 id="roadmap">ロードマップ</h3>
+                <img src="https://base-ec2if.akamaized.net/w=60,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="">
+                <div class="about_inner">
+                  <p>◎今後は麦の販売だけでなく、各種野菜や工業製品も販売していきたい</p>
+                </div>
+                
+                <h3 id="idea">理念</h3>
+                <img src="https://base-ec2if.akamaized.net/w=60,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="">
+                <div class="about_inner">
+                  <p>◎石ころを金塊に錬成したい</p>
+                </div>
+                
+                <h3 id="profile">生産者のプロフィールと挨拶</h3>
+                <img src="https://base-ec2if.akamaized.net/w=60,a=0,q=90,u=1/images/item/origin/5af5c4a129faa48e4ac14fce1d3d823f.jpg" alt="">
+                <div class="about_inner">
+                  <p>◎名前：大畑まさき</p>
+                  <p>◎ニックネーム：休日社長</p>
+                  <p>◎趣味：穴掘り,トルネード草刈り</p>
+                  <p>◎特技：素手で熊を倒せる</p>
+                  <p>◎説明：私はサラリーマンでしたが、退職を機に農家に手を染めました</p>
+                  <p>◎性格：おだやか</p>
+                  <p>◎血液型：O型</p>
+                </div>
+            </div>
+			
+			
+			
+			<p>{ShopIntroduction}</p>
+			<div class="social">
+				<ul class="clearfix">
+					{block:ShopFacebookId}
+					<li><a href="https://www.facebook.com/{ShopFacebookId}" target="_blank"><img src="/img/shop/fbicon.png" height="30" width="30"></a></li>
+					{/block:ShopFacebookId}
+					{block:ShopTwitterId}
+					<li class="tw"><a href="https://twitter.com/{ShopTwitterId}" target="_blank"><img src="/img/shop/twicon.png" height="30" width="30"></a></li>
+					{/block:ShopTwitterId}
+					{block:ShopAmebaId}
+					<li><a href="http://ameblo.jp/{ShopAmebaId}" target="_blank"><img src="/img/shop/ambicon.png" height="30" width="30"></a></li>
+					{/block:ShopAmebaId}
+					{block:ShopInstagramId}
+					<li><a href="http://instagram.com/{ShopInstagramId}" target="_blank"><img src="/img/shop/igicon.png" height="30" width="30"></a></li>
+					{/block:ShopInstagramId}
+				</ul>
+			</div>
+		</div>
+	</div>
+	{/block:AboutPage}
+
+	{block:ContactPage}
+	{ContactContentsTag}
+	{/block:ContactPage}
+
+	{block:PrivacyPage}
+	{PrivacyContentsTag}
+	{/block:PrivacyPage}
+
+	{block:LawPage}
+	{LawContentsTag}
+	{/block:LawPage}
+
+	{block:BlogPage}
+	{BlogContentsTag}
+	{/block:BlogPage}
+
+	<div class="footer_container">
+		<footer id="mainFooter">
+			<ul class="clearfix">
+				<li><a href="{PrivacyPageURL}">{lang:Privacy}</a></li>
+				<li><a href="{LawPageURL}">{lang:Law}</a></li>
+				<li class="boxRight">
+					<div class="socialBtnList clearfix">
+						<div class="fb sns">
+							<div class="fb-share-button" data-href="{ShopURL}/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse">シェア</a></div>
+						</div>
+						<div class="tw sns">
+							<a href="http://twitter.com/share" class="twitter-share-button" data-url="{ShopRedirectUrl}" data-lang="ja" data-hashtags="{TwitterDataHashtags}" data-via="{TwitterDataVia}" data-text="{ShopName}">{lang:Tweet}</a>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</footer>
+	</div>
+
+	<input id="base_url" type="hidden" value="{ShopURL}" />
+</body>
+</html>
+{/block:NotLoadItemsPage}
+{block:LoadItemsPage}
+{block:Items}
+<li class="content">
+	<div class="item-container">
+		<a href="{ItemPageURL}" title="" class="item-img">
+			{block:AppsItemLabel}
+			{AppsItemLabelTag}
+			{/block:AppsItemLabel}
+			<img src="{block:ItemImage1}{ItemImage1URL-300}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="{ItemTitle}" />
+		</a>
+		<div class="item-detail">
+			<a href="{ItemPageURL}" alt="item-name">
+				<h1 class ="truncate">{ItemTitle}</h1>
+			</a>
+			{block:HasItemStock}
+			{block:NoItemProperPrice}
+			<!-- 定価 -->
+			<h3>{ItemPrice}</h3>
+			{/block:NoItemProperPrice}
+			{block:HasItemProperPrice}
+			<!-- 割引 -->
+			<h3 class="discountPrice">
+				<span class="discountPrice__ratio">{ItemDiscountRate}</span>
+				<span class="discountPrice__calcPrice">{ItemPrice}</span>
+			</h3>
+			{/block:HasItemProperPrice}
+
+			<div>
+				<p>{ItemDetailNoBr}</p>
+				<a href="{ItemPageURL}" class="buy-button button">>  MORE</a>
+			</div>
+			{/block:HasItemStock}
+			{block:NoItemStock}
+			<h3 class="price_del">{ItemPrice}</h3>
+			<span>SOLD OUT</span>
+			<div>
+				<p>{ItemDetailNoBr}</p>
+				<a href="{ItemPageURL}" class="buy-button button btn_soldout">>  SOLD OUT</a>
+			</div>
+			{/block:NoItemStock}
+		</div>
+	</div>
+</li>
+{/block:Items}
+{/block:LoadItemsPage}
+
+{block:AppsSearch}
+<script>
+  /ページトップへボタン/ 
+  $(function() {
+    var showFlag = false;
+    var topBtn = $('#page-top');    
+    topBtn.css('bottom', '-100px');
+    var showFlag = false;
+    //スクロールが100に達したらボタン表示
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 100) {
+        if (showFlag == false) {
+          showFlag = true;
+          topBtn.stop().animate({'bottom' : '20px'}, 200); 
+        }
+      } else {
+        if (showFlag) {
+            showFlag = false;
+            topBtn.stop().animate({'bottom' : '-100px'}, 200); 
+        }
+      }
+    });
+    //スクロールしてトップ
+    topBtn.click(function () {
+      $('body,html').animate({scrollTop: 0}, 500);
+      return false;
+    });
+  });
+</script>
+<script>
+	$(function(){
+		var _color = $('#x_iconSearch').css('color');
+		$('#x_itemSearchForm').css('border-color' , _color);
+	});
+</script>
+{/block:AppsSearch}
